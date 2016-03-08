@@ -1,0 +1,97 @@
+[
+{
+	"hero":2001,
+	"order":1,
+	"ultimate":false,
+	"name":"Mana Break",
+	"Desc":"description",
+	"ability":"Passive",
+	"affect":"Enemy Unit",
+	"damageType":"Magical",
+	"pierce":true,
+	"remark":"important remark",
+	"cooldown":[70 , 70 , 70],
+	"cost":[125 , 200 , 275],
+	"radius":500,
+	"misc":[
+		{"Damage":[0.6 , 0.85, 1.1]},
+		{"Stun":[0.1, 0.2, 0.3]}
+	]
+},
+{
+	"hero":2001,
+	"order":2,
+	"ultimate":false,
+	"name":"Mana Break 2",
+	"Desc":"description",
+	"ability":"Passive",
+	"affect":"Enemy Unit",
+	"damageType":"Magical",
+	"pierce":false,
+	"remark":"important remark",
+	"cooldown":[70 , 70 , 70],
+	"cost":[125 , 200 , 275],
+	"radius":500,
+	"misc":[
+		{"Damage":[0.6 , 0.85, 1.1]},
+		{"Stun":[0.1, 0.2, 0.3]}
+	]
+},
+{
+	"hero":2001,
+	"order":3,
+	"ultimate":true,
+	"name":"Mana Break",
+	"Desc":"description",
+	"ability":"Passive",
+	"affect":"Enemy Unit",
+	"damageType":"Magical",
+	"pierce":true,
+	"remark":"important remark",
+	"cooldown":[70 , 70 , 70],
+	"cost":[125 , 200 , 275],
+	"radius":500,
+	"misc":[
+		{"Damage":[0.6 , 0.85, 1.1]},
+		{"Stun":[0.1, 0.2, 0.3]}
+	]
+},
+{
+	"hero":2001,
+	"order":4,
+	"ultimate":true,
+	"name":"Mana Break",
+	"Desc":"description",
+	"ability":"Passive",
+	"affect":"Enemy Unit",
+	"damageType":"Magical",
+	"pierce":true,
+	"remark":"important remark",
+	"cooldown":[70 , 70 , 70],
+	"cost":[125 , 200 , 275],
+	"radius":500,
+	"misc":[
+		{"Damage":[0.6 , 0.85, 1.1]},
+		{"Stun":[0.1, 0.2, 0.3]}
+	]
+},
+{
+	"hero":2002,
+	"order":1,
+	"ultimate":true,
+	"name":"Mana Break",
+	"Desc":"description",
+	"ability":"Passive",
+	"affect":"Enemy Unit",
+	"damageType":"Magical",
+	"pierce":true,
+	"remark":"important remark",
+	"cooldown":[70 , 70 , 70],
+	"cost":[125 , 200 , 275],
+	"radius":500,
+	"misc":[
+		{"Damage":[0.6 , 0.85, 1.1]},
+		{"Stun":[0.1, 0.2, 0.3]}
+	]
+}
+]
