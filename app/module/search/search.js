@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react-native'),
+	EventEmitter = require('EventEmitter'),
 	_ = require("lodash"),
 	moment = require("moment"),
 	Hero = require('../../lib/hero.json'),
@@ -30,13 +31,17 @@ class Search extends Component {
 		super(props);
 		this.state = {
 			app: props.app,
-			NumberID: null,
+			NumberID: "",
 			userNotFound: false,
 			loading: false,
 			loading_storedUser: true,
 		}
 
 		this._loadStoredUsers();
+	}
+
+	compoentWillMount(){
+		console.log(3);
 	}
 
 	_loadStoredUsers(){
@@ -50,6 +55,7 @@ class Search extends Component {
 		.then((value)=>{
 			if(!value){
 				self.setState({
+					ds: DS,
 					loading_storedUser:false,
 					history_reloading: false,
 					history_players: DS.cloneWithRows([])
@@ -68,6 +74,7 @@ class Search extends Component {
 					self.setState({
 						loading_storedUser:false,
 						history_reloading: false,
+						history_players_src: sorted,
 						history_players: DS.cloneWithRows(sorted),
 					});
 				});
@@ -77,7 +84,7 @@ class Search extends Component {
 	}
 
 	SearchPressed(type , id){
-		var self =this, dotaid;
+		var self =this, dotaid, newUser, newUserList = [], newDS;
 
 		if(self.state.loading){ 
 			return; 
@@ -110,6 +117,8 @@ class Search extends Component {
 							userNotFound:false
 						});
 
+						self.refreshHistoryUserList(results);
+
 						self.props.navigator.push({
 							title: "Found User",
 							component: FoundUser,
@@ -126,11 +135,10 @@ class Search extends Component {
 						}, 1000);
 
 						LocalStorage.Search_Save_User(
-							results.response.players[0] , 
+							results.response.players[0], 
 							(callback)=>{
 								if(callback){
-									// true => saved
-									// false => exist
+									 // hint msg "user saved"
 								}
 							} ,
 							(err)=>{
@@ -149,8 +157,32 @@ class Search extends Component {
 		}
 	}
 
-	containerPressed(event){
-		this.refs.idInput.blur();
+	refreshHistoryUserList(results){
+		var self = this, newUserList = [], newUser, newDS;
+		newUser = {
+			avatar: results.response.players[0].avatar,
+			dotaid: parseInt(self.state.NumberID),
+			requestTime: moment().unix().toString(),
+			steamid: results.response.players[0].steamid,
+			username: results.response.players[0].personaname
+		}
+		newUserList = [newUser].concat(self.state.history_players_src);
+		newDS = new ListView.DataSource({
+			rowHasChanged: (r1 , r2) => r1 != r2
+		});
+
+		self.setState({
+			history_players_src: newUserList,
+			history_players: newDS.cloneWithRows(newUserList),
+		});
+	}
+
+	containerPressed(isBlur, event){
+		if(isBlur){
+			this.refs.idInput.blur();
+		} else {
+			event.stopPropagation();
+		}
 		return;
 	}
 
@@ -230,12 +262,20 @@ class Search extends Component {
 		}
 	}
 
+	CleanID(){
+		this.refs.idInput.setNativeProps({text: ''});
+		this.setState({
+			NumberID: ""
+		});
+	}
+
 	render() {
 		var self = this, 
 			errMsg, 
 			loadingIcon, 
 			loadingHistoryIcon,
-			SearchHistoryList;
+			SearchHistoryList,
+			IDCleanBtn;
 		if(self.state.userNotFound){
 			errMsg = <Text style={styles.errMsg}>
 				No Such User!
@@ -268,18 +308,46 @@ class Search extends Component {
 							</Text>
 					:
 					null;
+		self.state.NumberID.length > 0 ? 
+					IDCleanBtn = 
+					<TouchableHighlight
+						underlayColor={"white"}
+						style={{
+							position:"absolute",
+							top: 20,
+							right: 10,
+							height:40,
+							width:40,
+							alignSelf:"flex-end"
+						}} 
+						onPress={this.CleanID.bind(self)} >
+						<Image 
+						source={require("image!arrow_cleanText")} 
+						style={{
+							height: 40,
+							width: 40
+						}}/>
+						</TouchableHighlight>
+						:
+						null;
 		return (
 			<View 
 				style={styles.search_container}
-				onTouchStart={this.containerPressed.bind(this)}>
+				onTouchStart={this.containerPressed.bind(this, true)}>
 				<Text style={styles.title}></Text>
 
-				<TextInput 
-				ref="idInput"
-				onChangeText={(numberID) => this.setState({NumberID:numberID})}
-				style={styles.input} 
-				placeholder="Steam ID" />
+				<View 
+				onTouchStart={this.containerPressed.bind(this, false)}
+				style={{position: "relative"}}>
+					<TextInput 
+					ref="idInput"
+					onChangeText={(numberID) => this.setState({NumberID:numberID})}
+					style={styles.input} 
+					placeholder="Player # ID">
 
+					</TextInput>
+					{IDCleanBtn}
+				</View>
 				<TouchableHighlight 
 				onPress={this.SearchPressed.bind(this, "search", this.state.NumberID)}
 				style={styles.button}>

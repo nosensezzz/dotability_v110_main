@@ -26,6 +26,7 @@ class Main extends Component {
 	}
 
 	render() {
+		var self = this;
 		return (
 			<TabBarIOS style={styles.none}>
 				<TabBarIOS.Item
@@ -42,6 +43,7 @@ class Main extends Component {
 							component: Search,
 							title: "Search"
 						}}
+						
 					>
 					</NavigatorIOS>
 				</TabBarIOS.Item>
