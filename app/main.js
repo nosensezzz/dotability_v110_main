@@ -12,8 +12,8 @@ var {
   TabBarIOS
 } = React;
 
-var Search = require('./module/search/search'),
-	About = require("./module/about/index");
+var Search = require("./module/search/search"),
+	User = require("./module/user/index");
 
 class Main extends Component {
 	constructor(props){
@@ -21,7 +21,7 @@ class Main extends Component {
 
 		this.state = {
 			app: props.app,
-			selectedTab: "about"
+			selectedTab: "user"
 		}
 	}
 
@@ -49,15 +49,13 @@ class Main extends Component {
 				</TabBarIOS.Item>
 
 				<TabBarIOS.Item
-					title="About"
+					title="User"
 					icon={require("image!user")}
-					selected={this.state.selectedTab === "about"}
-					onPress={()=>{ this.setState({selectedTab: "about"}) }}
+					selected={this.state.selectedTab === "user"}
+					onPress={()=>{ this.setState({selectedTab: "user"}) }}
 				>
-					<About />
+					<User />
 				</TabBarIOS.Item>
-
-			
 			</TabBarIOS>
 		);
 	}

@@ -117,7 +117,7 @@ class Search extends Component {
 							userNotFound:false
 						});
 
-						self.refreshHistoryUserList(results);
+						self.refreshHistoryUserList(results, dotaid);
 
 						self.props.navigator.push({
 							title: "Found User",
@@ -157,24 +157,33 @@ class Search extends Component {
 		}
 	}
 
-	refreshHistoryUserList(results){
-		var self = this, newUserList = [], newUser, newDS;
-		newUser = {
-			avatar: results.response.players[0].avatar,
-			dotaid: parseInt(self.state.NumberID),
-			requestTime: moment().unix().toString(),
-			steamid: results.response.players[0].steamid,
-			username: results.response.players[0].personaname
-		}
-		newUserList = [newUser].concat(self.state.history_players_src);
-		newDS = new ListView.DataSource({
-			rowHasChanged: (r1 , r2) => r1 != r2
-		});
+	refreshHistoryUserList(results, dotaid){
+		var self = this, newUserList = [], newUser, newDS, hasUser;
 
-		self.setState({
-			history_players_src: newUserList,
-			history_players: newDS.cloneWithRows(newUserList),
+		_.forEach(self.state.history_players_src, (player)=>{
+			if(player.dotaid == dotaid){
+				hasUser = true;
+				return;
+			}
 		});
+		if(!hasUser){
+			newUser = {
+				avatar: results.response.players[0].avatar,
+				dotaid: parseInt(self.state.NumberID),
+				requestTime: moment().unix().toString(),
+				steamid: results.response.players[0].steamid,
+				username: results.response.players[0].personaname
+			}
+			newUserList = [newUser].concat(self.state.history_players_src);
+			newDS = new ListView.DataSource({
+				rowHasChanged: (r1 , r2) => r1 != r2
+			});
+
+			self.setState({
+				history_players_src: newUserList,
+				history_players: newDS.cloneWithRows(newUserList),
+			});
+		}
 	}
 
 	containerPressed(isBlur, event){
@@ -187,6 +196,7 @@ class Search extends Component {
 	}
 
 	renderHistoryList(data , rowID , sectionID){
+		console.log(data.requestTime);
 		var self = this,
 			searchTime = moment.unix(data.requestTime).fromNow();
 

@@ -119,6 +119,7 @@ class FoundUser extends Component {
 	}
 
 	renderMatch(data , rowID, sectionID){
+		console.log(data.start_time);
 		var self = this,
 			startTime = moment(moment.unix(data.start_time).format()).fromNow(),
 			hero, type;
@@ -209,9 +210,15 @@ class FoundUser extends Component {
 
 	render(){
 		var self = this,
-			Matches,
+			Matches, Text_TimeCreated,
 			errMsg;
 
+		if(!self.state.user.timecreated){ 
+			Text_TimeCreated = <Text style={mystyle.font_1}>Invalid Date</Text>
+		}
+		else {
+			Text_TimeCreated = <Text style={mystyle.font_1}>{moment(moment.unix(self.state.user.timecreated).format()).fromNow()}</Text>;
+		}
 		if(self.state.isMatchesLoaded){
 			Matches = <ListView 
 							style={styles.app_backgroundcolor}
@@ -263,7 +270,7 @@ class FoundUser extends Component {
 						</View>
 						<View style={styles.flex_row}>
 							<Text style={mystyle.font_1}>Created:</Text>
-							<Text style={mystyle.font_1}>{moment(moment.unix(self.state.user.timecreated).format()).fromNow()}</Text>
+							{Text_TimeCreated}
 						</View>
 					</View>
 		          </LinearGradient>
