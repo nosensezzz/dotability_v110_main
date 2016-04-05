@@ -66,6 +66,7 @@ var styles = StyleSheet.create({
 });
 
 module.exports = Main;
+// edited
 // curl http://localhost:8081/index.ios.bundle -o main.jsbundle?platform=ios
 // org.reactjs.native.example.Dotability
 
