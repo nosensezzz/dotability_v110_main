@@ -1,6 +1,6 @@
 # README #
 ### How to start the project ###
-
+PROJECT HAS BEEN MOVED TO BITBUCKET, THIS IS THE PROTOTYPE, WELCOME TO USE IT!
 Download code, 
 Run npm install at the right path,
 Run npm update to update all node modules.
